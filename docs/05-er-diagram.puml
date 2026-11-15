@@ -1,0 +1,67 @@
+
+@startuml
+
+title ER-диаграммаи системаи бронированияи мизҳо
+
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam entity {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+}
+
+entity "users\nИстифодабарандагон" as users {
+    * id : INT <<PK>>
+    --
+    full_name : VARCHAR(150)
+    email : VARCHAR(255) <<UNIQUE>>
+    phone : VARCHAR(30)
+    password_hash : VARCHAR(255)
+    role : VARCHAR(20)
+    created_at : DATETIME
+    updated_at : DATETIME
+}
+
+entity "dining_tables\nМизҳои тарабхона" as dining_tables {
+    * id : INT <<PK>>
+    --
+    table_number : VARCHAR(20) <<UNIQUE>>
+    capacity : INT
+    location : VARCHAR(100)
+    description : TEXT
+    status : VARCHAR(20)
+    created_at : DATETIME
+    updated_at : DATETIME
+}
+
+entity "reservations\nФармоишҳо" as reservations {
+    * id : INT <<PK>>
+    --
+    user_id : INT <<FK>>
+    table_id : INT <<FK>>
+    reservation_start : DATETIME
+    reservation_end : DATETIME
+    guests_count : INT
+    status : VARCHAR(20)
+    comment : TEXT
+    reviewed_by : INT <<FK>>
+    reviewed_at : DATETIME
+    rejection_reason : TEXT
+    created_at : DATETIME
+    updated_at : DATETIME
+}
+
+users ||--o{ reservations : "эҷод мекунад"
+users |o--o{ reservations : "баррасӣ мекунад"
+dining_tables ||--o{ reservations : "барои он фармоиш дода мешавад"
+
+note bottom of reservations
+  Ҳар як фармоиш ба як мизоҷ
+  ва як миз вобаста мебошад.
+  Корманди баррасикарда метавонад
+  то лаҳзаи баррасӣ муайян нашуда бошад.
+end note
+
+@enduml
