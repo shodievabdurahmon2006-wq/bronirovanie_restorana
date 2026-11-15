@@ -1,0 +1,82 @@
+
+@startuml
+
+title Диаграммаи Deployment\nСистемаи бронированияи мизҳо дар тарабхона
+
+top to bottom direction
+
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam nodesep 45
+skinparam ranksep 45
+
+skinparam node {
+    BackgroundColor White
+    BorderColor Black
+}
+
+skinparam database {
+    BackgroundColor White
+    BorderColor Black
+}
+
+skinparam artifact {
+    BackgroundColor White
+    BorderColor Black
+}
+
+node "Дастгоҳи истифодабаранда\n(Client Device)" as client {
+
+    artifact "Веб-браузер\nChrome / Firefox / Edge" as browser
+
+}
+
+node "Сервери веб\nXAMPP" as webserver {
+
+    node "Apache HTTP Server" as apache {
+
+        artifact "Веб-интерфейс\nHTML / CSS / JavaScript" as frontend
+
+        artifact "Веб-барнома\nBusiness Logic" as backend
+
+    }
+
+}
+
+node "Сервери пойгоҳи додаҳо" as dbserver {
+
+    database "MySQL 8.0\nrestaurant_booking" as mysql
+
+}
+
+node "Воситаи идоракунӣ" as adminserver {
+
+    artifact "phpMyAdmin" as phpmyadmin
+
+}
+
+browser --> apache : HTTP / HTTPS
+frontend --> backend : HTTP Requests
+backend --> mysql : SQL / MySQL Protocol
+phpmyadmin --> mysql : Database Management
+
+note right of backend
+  Вазифаҳои асосӣ:
+  - Бақайдгирӣ ва воридшавӣ
+  - Санҷиши дастрасии миз
+  - Эҷоди фармоиш
+  - Идоракунии фармоишҳо
+  - Санҷиши ҳуқуқи дастрасӣ
+end note
+
+note bottom of mysql
+  Пойгоҳи додаҳо:
+  restaurant_booking
+
+  Ҷадвалҳо:
+  - users
+  - dining_tables
+  - reservations
+end note
+
+@enduml
