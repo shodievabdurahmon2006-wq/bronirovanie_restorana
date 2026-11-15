@@ -1,0 +1,78 @@
+
+@startuml
+title Диаграммаи Sequence\nРаванди брониркунии миз дар тарабхона
+
+autonumber
+skinparam shadowing false
+skinparam sequence {
+    ArrowColor Black
+    LifeLineBorderColor Black
+    LifeLineBackgroundColor White
+    ParticipantBorderColor Black
+    ParticipantBackgroundColor White
+}
+
+actor "Мизоҷ" as Customer
+boundary "Веб-интерфейс" as UI
+control "Системаи бронкунӣ" as System
+database "Пойгоҳи додаҳо" as DB
+actor "Корманд" as Employee
+
+Customer -> UI : Интихоби сана ва вақт
+Customer -> UI : Интихоби шумораи меҳмонон
+Customer -> UI : Интихоби миз
+
+UI -> System : Дархости санҷиши дастрасӣ
+System -> DB : Санҷидани фармоишҳои мавҷуда
+DB --> System : Натиҷаи санҷиш
+
+alt Миз дастрас аст
+
+    System --> UI : Намоиши дастрас будани миз
+    UI --> Customer : Намоиши маълумоти миз
+
+    Customer -> UI : Ирсоли дархости бронкунӣ
+    UI -> System : Интиқоли маълумоти фармоиш
+
+    System -> System : Санҷидани дурустии маълумот
+
+    System -> DB : Сабти фармоиши нав
+    DB --> System : Натиҷаи сабт
+
+    System --> UI : Фармоиш бо ҳолати pending
+    UI --> Customer : Намоиши паёми қабул шудани дархост
+
+    Employee -> UI : Кушодани рӯйхати фармоишҳо
+    UI -> System : Дархости рӯйхати фармоишҳо
+    System -> DB : Гирифтани фармоишҳои pending
+    DB --> System : Рӯйхати фармоишҳо
+    System --> UI : Интиқоли рӯйхати фармоишҳо
+    UI --> Employee : Намоиши фармоишҳо
+
+    Employee -> UI : Тасдиқ ё рад кардани фармоиш
+    UI -> System : Ирсоли қарор
+
+    alt Фармоиш тасдиқ мешавад
+
+        System -> DB : Тағйир додани ҳолат ба confirmed
+        DB --> System : Тасдиқи тағйирот
+        System --> UI : Натиҷаи тасдиқ
+        UI --> Customer : Огоҳинома дар бораи тасдиқ
+
+    else Фармоиш рад мешавад
+
+        System -> DB : Тағйир додани ҳолат ба rejected
+        DB --> System : Тасдиқи тағйирот
+        System --> UI : Натиҷаи радкунӣ
+        UI --> Customer : Огоҳинома дар бораи радкунӣ
+
+    end
+
+else Миз дастрас нест
+
+    System --> UI : Натиҷаи манфии санҷиш
+    UI --> Customer : Намоиши паёми дастнорас будани миз
+
+end
+
+@enduml
