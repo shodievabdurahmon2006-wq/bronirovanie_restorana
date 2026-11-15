@@ -1,0 +1,70 @@
+
+@startuml
+left to right direction
+
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+
+title Диаграммаи Use Case\nСистемаи бронированияи мизҳо дар тарабхона
+
+actor "Мизоҷ" as Customer
+actor "Корманд" as Employee
+actor "Маъмур" as Admin
+
+rectangle "Системаи бронированияи мизҳо\nдар тарабхона" {
+
+    usecase "Бақайдгирӣ" as UC1
+    usecase "Ворид шудан ба система" as UC2
+
+    usecase "Дидани маълумоти\nтарабхона" as UC3
+    usecase "Дидани рӯйхати\nмизҳо" as UC4
+    usecase "Санҷидани дастрасии\nмиз" as UC5
+    usecase "Фармоиш додани миз" as UC6
+    usecase "Дидани фармоишҳои\nшахсӣ" as UC7
+    usecase "Бекор кардани\nфармоиш" as UC8
+
+    usecase "Дидани рӯйхати\nфармоишҳо" as UC9
+    usecase "Тасдиқ кардани\nфармоиш" as UC10
+    usecase "Рад кардани\nфармоиш" as UC11
+    usecase "Тағйир додани ҳолати\nфармоиш" as UC12
+
+    usecase "Идоракунии мизҳо" as UC13
+    usecase "Илова кардани миз" as UC14
+    usecase "Таҳрир кардани миз" as UC15
+    usecase "Нест кардани миз" as UC16
+
+    usecase "Идоракунии\nистифодабарандагон" as UC17
+    usecase "Идоракунии ҳамаи\nфармоишҳо" as UC18
+
+    UC6 ..> UC5 : <<include>>
+    UC10 ..> UC9 : <<include>>
+    UC11 ..> UC9 : <<include>>
+
+    UC13 ..> UC14 : <<include>>
+    UC13 ..> UC15 : <<include>>
+    UC13 ..> UC16 : <<include>>
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC6
+Customer --> UC7
+Customer --> UC8
+
+Employee --> UC2
+Employee --> UC9
+Employee --> UC10
+Employee --> UC11
+Employee --> UC12
+
+Admin --> UC2
+Admin --> UC13
+Admin --> UC17
+Admin --> UC18
+Admin --> UC9
+
+@enduml
